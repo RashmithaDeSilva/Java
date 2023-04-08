@@ -1,0 +1,6 @@
+Before running this code, be sure to add the "mysql-connector-j-8.0.31.jar" inside the lib folder to the lib.
+
+Or download this lib (https://mvnrepository.com/artifact/mysql/mysql-connector-java)
+
+Happy Coding (PK_*_*)
+(2023/01/12)
