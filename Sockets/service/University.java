@@ -1,10 +1,13 @@
-package lk.ac.iit.csa.cex.service;
+package service;
 
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Timer;
 
@@ -22,7 +25,7 @@ public class University {
     public static void main(String[] args) {
         try {
 
-            int universityPort = 23044;
+            int universityPort = 5050;
             //create the server socket
 			ServerSocket universitySocket = new ServerSocket(universityPort);
 
@@ -47,6 +50,10 @@ public class University {
 
 			String returnMessage;
 			//write code to extract the UoW Number, module code and tution fee from the message.
+			String[] arr = receivedMessage.split(" - ");
+			String studentUoWId = arr[0];
+			String moduleCode = arr[1];
+			Integer tutionFee = Integer.parseInt(arr[2]);
 
 
 			//Verify if the module code and the sent amount sent is correct.
@@ -54,11 +61,13 @@ public class University {
 			//if the amount is  correct, prepare the message to say transaction was successfull along with current time
 			//if the amount is not correct, prepare the message to say transaction failed along with amount received.
 
-			if (100 == Integer.getInteger(receivedMessage)){
-				returnMessage = "Transaction was successful";
-			}
-        else  {
-				returnMessage = "transaction failed";
+			if (50022 == tutionFee){
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+				LocalDateTime now = LocalDateTime.now();
+				returnMessage = "[" + dtf.format(now) + "] - " + "Transaction was successful";
+
+			}else  {
+				returnMessage = "$" + tutionFee + " transaction failed";
 			}
 
 			//Now send the message back.
@@ -82,18 +91,13 @@ public class University {
 		//Catch  exceptions, there could be many; and write an appropriate message to the log
 		catch (UnknownHostException e) {
 			System.out.println(e);
+
 		} catch (IOException e) {
 			System.out.println(e);
-		}
-//	catch (................... e) {
-//	    System.out.println(........);
-//	}
-//        catch (.................. e) {
-//	    System.out.println(......);
-//	}
-		//Catches general exception
-		catch (Exception e) {
+
+		} catch (Exception e) { //Catches general exception
 			System.out.println(e);
+
 		} finally {
 			try {
 				//close the connection
